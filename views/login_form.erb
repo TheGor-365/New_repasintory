@@ -1,4 +1,18 @@
-<form action='/login/attempt' method='post' class="form-inline well">
+<!-- <form  class="form-inline well">
   <input type="text" name='username' placeholder="username" autofocus>
   <input class="btn primary" type='submit' value='log in'>
+</form> -->
+
+<form action='/login/attempt' method='post' class="form-group">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Login</label>
+    <input type="text" name="username" class="form-control" id="exampleInputEmail1" placeholder="Input your login" autofocus>
+    <small class="form-text text-muted">We using coocies.</small>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Input your password" autofocus>
+  </div>
+
+  <button type="submit" class="btn btn-primary" value="log in">Submit</button>
 </form>
