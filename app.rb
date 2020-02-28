@@ -3,7 +3,6 @@ require 'sinatra'
 require 'sinatra/reloader'
 
 get '/about' do
-  @error = 'This is error!'
   erb :about
 end
 
@@ -28,18 +27,21 @@ get '/logout' do
   erb "<div class='alert alert-message'>Logged out</div>"
 end
 
-post '/info.txt' do
+get 'public/info.txt' do
+  erb "<a href='/public/info.txt'></a>"
+end
+
+post '/login/form' do
   @login = params[:login]
   @password = params[:password]
 
-  if @login != "Gor" && @password != "123"
+  if @login == "Gor" && @password == "123"
 
-    @error = "Wrong login or password"
-    erb :login_form
+    return "<a href='public/info.txt'></a>"
   else
-    erb "<a href='info.txt'></a>"
+    @error = "Wrong login or password"
+    return erb :login_form
   end
-
 end
 
 post '/visit' do
@@ -64,10 +66,26 @@ post '/visit' do
     end
   end
 
-  # info = File.open '/info.txt', 'a'
-  # info.write "Date and time: #{@date_time} | Phone: #{@phone} | Username: #{@username} Barber: #{@barber} | Color: #{@color}\n"
-  # info.close
+  visiters = File.open 'public/info.txt', 'a'
+  visiters.write "Date and time: #{@date_time} | Phone: #{@phone} | Username: #{@username} | Barber: #{@barber} | Color: #{@color}\n"
+  visiters.close
 
-  @message = "Your info is sended:\n\nDate and time: #{@date_time} | Phone: #{@phone} | Username: #{@username} | Barber: #{@barber} | Color: #{@color}"
+  @message = "YOUR INFO IS SENDED:\n\nDate and time: #{@date_time} | Phone: #{@phone} | Username: #{@username} | Barber: #{@barber} | Color: #{@color}"
   erb :visit
+end
+
+post '/contacts' do
+  @email = params[:email]
+  @comment = params[:comment]
+
+  if @email == ''
+    @error = "Need to input email"
+  end
+
+  contacts = File.open 'public/info_2.txt', 'a'
+  contacts.write "Mail - #{@email}:\nComment: #{@comment}\n\n"
+  contacts.close
+
+  @message = "YOUR INFO IS SENDED" if @mail != ''
+  erb :contacts
 end
