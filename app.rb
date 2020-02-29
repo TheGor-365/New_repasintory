@@ -58,12 +58,18 @@ post '/visit' do
     :date_time => 'Input your visiting date and time'
   }
 
-  visit_form_alerts.each do |key, value|
+  # visit_form_alerts.each do |key, value|
+  #
+  #   if params[key] == ''
+  #     @error = visit_form_alerts[key]
+  #     return erb :visit
+  #   end
+  # end
 
-    if params[key] == ''
-      @error = visit_form_alerts[key]
-      return erb :visit
-    end
+  @error = visit_form_alerts.select {|key,_| params[key] == ""}.values.join(", ")
+
+  if @errof != ""
+    return erb :visit
   end
 
   visiters = File.open 'public/info.txt', 'a'
