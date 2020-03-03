@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
+require 'pony'
 
 get '/about' do
   erb :about
@@ -81,6 +82,7 @@ post '/visit' do
 end
 
 post '/contacts' do
+  @name = params[:name]
   @email = params[:email]
   @comment = params[:comment]
 
@@ -89,8 +91,28 @@ post '/contacts' do
   end
 
   contacts = File.open 'public/info_2.txt', 'a'
-  contacts.write "Mail - #{@email}:\nComment: #{@comment}\n\n"
+  contacts.write "Name: #{@name.capitalize}, email: | #{@email} |\nComment body: #{@comment}\n\n"
   contacts.close
+
+  # Pony.mail(
+  #   :name => params[:name],
+  #   :email => params[:email],
+  #   :body => params[:comment],
+  #   :to => 'a 7495500@gmail.com',
+  #   :subject => params[:name] + " has contacted you",
+  #   :body => params[:message],
+  #   :port => '587',
+  #   :via => :smtp,
+  #   :via_options => {
+  #     :addres => 'smtp.gmail.com',
+  #     :port => '587',
+  #     :enable_starttls_auto => true,
+  #     :user_name => 'Gor',
+  #     :password => 'Qazx1234',
+  #     :authentication => :plain,
+  #     :domain => 'localhost.localdomain'
+  #   }
+  # )
 
   @message = "YOUR INFO IS SENDED" if @mail != ''
   erb :contacts
